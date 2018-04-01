@@ -61,12 +61,24 @@ extension TodoViewModel: TodoViewDelegate {
         guard let index = self.items.index(where: { ($0.id ?? "") == id }) else { return }
         self.items.remove(at: index)
         
-        // notify view item has been delted
+        // notify view item has been deleted
         self.view?.removeTodoItem(at: index)
     }
     
     func onDoneTodoItem(id: String) {
+        guard let index = self.items.index(where: { ($0.id ?? "") == id }) else { return }
         
+        var item = self.items[index]
+        item.isDone = !(item.isDone!)
+        
+        if var doneMenuItem = item.menuItems?.filter({ (menuItem) -> Bool in
+            return menuItem is DoneMenuItemViewModel
+        }).first {
+            doneMenuItem.title = item.isDone! ? "Undone" : "Done"
+        }
+        
+        // notify view item has been updated
+        self.view?.updateTodoItem(at: index)
     }
     
 }

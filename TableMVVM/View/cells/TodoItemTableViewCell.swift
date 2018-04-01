@@ -32,7 +32,16 @@ class TodoItemTableViewCell: UITableViewCell {
     /// - Parameter viewModel: Todo Item Presentable
     func configureCell(with viewModel: TodoItemPresentable) {
         self.idLabel.text = viewModel.id ?? ""
-        self.itemLabel.text = viewModel.textValue ?? ""
+        
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: viewModel.textValue ?? "")
+        if viewModel.isDone! {
+            let range: NSRange = NSMakeRange(0, attributeString.length)
+            attributeString.addAttribute(NSAttributedStringKey.strikethroughColor, value: UIColor.lightGray, range: range)
+            attributeString.addAttribute(NSAttributedStringKey.strikethroughStyle, value: 1, range: range)
+            attributeString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lightGray, range: range)
+        }
+        
+        self.itemLabel.attributedText = attributeString
     }
     
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TodoMenuItemViewPresentable {
-    var title: String? { get }
+    var title: String? { get set }
     var backColor: String? { get }
 }
 

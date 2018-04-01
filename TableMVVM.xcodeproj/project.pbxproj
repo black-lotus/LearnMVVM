@@ -113,20 +113,14 @@
 		F1619A8C2070BC6400952950 /* TableMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				F1619ACC20712CD000952950 /* View Model */,
+				F1619ACB20712CC100952950 /* View */,
+				F1619ACD20712CEA00952950 /* Extension */,
 				F1619A8D2070BC6400952950 /* AppDelegate.swift */,
-				F1619A8F2070BC6400952950 /* ViewController.swift */,
 				F1619A912070BC6400952950 /* Main.storyboard */,
 				F1619A942070BC6400952950 /* Assets.xcassets */,
 				F1619A962070BC6400952950 /* LaunchScreen.storyboard */,
 				F1619A992070BC6400952950 /* Info.plist */,
-				F1619ABB2070BE1500952950 /* TodoViewModel.swift */,
-				F1619ABD2070BEF600952950 /* TodoItemViewModel.swift */,
-				F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */,
-				F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */,
-				F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */,
-				F1619ABF2070C11100952950 /* TodoItemTableViewCell.swift */,
-				F1619AC02070C11100952950 /* TodoItemTableViewCell.xib */,
-				F1619AC92070ED0C00952950 /* UIColorExtension.swift */,
 			);
 			path = TableMVVM;
 			sourceTree = "<group>";
@@ -147,6 +141,44 @@
 				F1619AAF2070BC6400952950 /* Info.plist */,
 			);
 			path = TableMVVMUITests;
+			sourceTree = "<group>";
+		};
+		F1619ACB20712CC100952950 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F1619ACE20712CFF00952950 /* cells */,
+				F1619A8F2070BC6400952950 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F1619ACC20712CD000952950 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				F1619ABB2070BE1500952950 /* TodoViewModel.swift */,
+				F1619ABD2070BEF600952950 /* TodoItemViewModel.swift */,
+				F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */,
+				F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */,
+				F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		F1619ACD20712CEA00952950 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F1619AC92070ED0C00952950 /* UIColorExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		F1619ACE20712CFF00952950 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				F1619ABF2070C11100952950 /* TodoItemTableViewCell.swift */,
+				F1619AC02070C11100952950 /* TodoItemTableViewCell.xib */,
+			);
+			path = cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

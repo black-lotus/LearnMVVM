@@ -12,6 +12,7 @@ protocol TodoItemPresentable {
     
     var id: String? { get }
     var textValue: String? { get }
+    var isDone: Bool? { get set }
     var menuItems: [TodoMenuItemViewPresentable]? { get }
     
 }
@@ -26,6 +27,7 @@ class TodoItemViewModel: TodoItemPresentable {
    
     var id: String? = "0"
     var textValue: String?
+    var isDone: Bool? = false
     var menuItems: [TodoMenuItemViewPresentable]? = [TodoMenuItemViewPresentable]()
     
     weak var parent: TodoViewDelegate?
@@ -40,7 +42,7 @@ class TodoItemViewModel: TodoItemPresentable {
         removeMenuItem.backColor = "#ff0000"
         
         let doneMenuItem = DoneMenuItemViewModel(parentViewModel: self)
-        doneMenuItem.title = "Done"
+        doneMenuItem.title = self.isDone! ? "Undone" : "Done"
         doneMenuItem.backColor = "#008800"
         
         menuItems?.append(contentsOf: [removeMenuItem, doneMenuItem])
