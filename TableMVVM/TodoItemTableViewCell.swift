@@ -12,6 +12,9 @@ class TodoItemTableViewCell: UITableViewCell {
 
     public static let identifier: String = "TodoItemTableViewCell"
     
+    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var itemLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -28,7 +31,8 @@ class TodoItemTableViewCell: UITableViewCell {
     ///
     /// - Parameter viewModel: Todo Item Presentable
     func configureCell(with viewModel: TodoItemPresentable) {
-        
+        self.idLabel.text = viewModel.id ?? ""
+        self.itemLabel.text = viewModel.textValue ?? ""
     }
     
 }
