@@ -8,17 +8,26 @@
 
 import Foundation
 
-protocol TodoItemDelegate {
-    func onTodoItemAdded()
+protocol TodoViewDelegate {
+    func onAddTodoItem()
 }
 
+protocol TodoViewPresentable {
+    
+    var newTodoItem: String? { get }
+    
+}
 
-class TodoViewModel {
+class TodoViewModel: TodoViewPresentable {
     
     var newTodoItem: String?
     var items: [TodoItemPresentable] = []
     
-    init() {
+    weak var view: TodoView?
+    
+    init(view: TodoView?) {
+        self.view = view
+        
         let item1 = TodoItemViewModel(id: "1", textValue: "aaa")
         let item2 = TodoItemViewModel(id: "2", textValue: "bbb")
         let item3 = TodoItemViewModel(id: "3", textValue: "ccc")
@@ -28,10 +37,22 @@ class TodoViewModel {
     
 }
 
-extension TodoViewModel: TodoItemDelegate {
+extension TodoViewModel: TodoViewDelegate {
     
-    func onTodoItemAdded() {
+    func onAddTodoItem() {
+        guard let newValue = self.newTodoItem, !newValue.isEmpty else {
+            return
+        }
         
+        let index = self.items.count + 1
+        let newItem = TodoItemViewModel(id: "\(index)", textValue: newValue)
+        self.items.append(newItem)
+        
+        // reset
+        self.newTodoItem = nil
+        
+        // notify view item has been inserted
+        self.view?.insertTodoItem()
     }
     
 }

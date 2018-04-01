@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TodoView: class {
+    func insertTodoItem()
+}
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -24,7 +28,7 @@ class ViewController: UIViewController {
         self.tableView.delegate = self
         
         if self.viewModel == nil {
-            self.viewModel = TodoViewModel()
+            self.viewModel = TodoViewModel(view: self)
         }
     }
 
@@ -34,12 +38,16 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onAddItem(_ sender: UIButton) {
+        guard let text: String = self.itemTextField.text, !text.isEmpty else { return }
+        
+        self.viewModel?.newTodoItem = text
+        self.viewModel?.onAddTodoItem()
     }
     
 }
 
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension ViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -63,3 +71,35 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
+
+extension ViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let index: Int = indexPath.row
+        if let item = self.viewModel?.items[index] {
+            (item as? TodoItemViewDelegate)?.onItemSelected()
+        }
+    }
+    
+}
+
+
+extension ViewController: TodoView {
+    
+    func insertTodoItem() {
+        guard let items = self.viewModel?.items else {
+            return
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.itemTextField.text = self?.viewModel?.newTodoItem
+            
+            self?.tableView.beginUpdates()
+            self?.tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: UITableViewRowAnimation.automatic)
+            self?.tableView.endUpdates()
+        }
+    }
+    
+}
+
