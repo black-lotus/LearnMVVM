@@ -8,25 +8,42 @@
 
 import Foundation
 
-protocol TodoItemViewDelegate {
-    func onItemSelected()
-}
-
 protocol TodoItemPresentable {
     
     var id: String? { get }
     var textValue: String? { get }
+    var menuItems: [TodoMenuItemViewPresentable]? { get }
     
 }
 
+protocol TodoItemViewDelegate: class {
+    func onItemSelected()
+    func onRemoveSelected()
+    func onDoneSelected()
+}
+
 class TodoItemViewModel: TodoItemPresentable {
-    
+   
     var id: String? = "0"
     var textValue: String?
+    var menuItems: [TodoMenuItemViewPresentable]? = [TodoMenuItemViewPresentable]()
     
-    init(id: String?, textValue: String?) {
+    weak var parent: TodoViewDelegate?
+    
+    init(id: String?, textValue: String?, parentViewModel: TodoViewDelegate?) {
         self.id = id
         self.textValue = textValue
+        self.parent = parentViewModel
+        
+        let removeMenuItem = RemoveMenuItemViewModel(parentViewModel: self)
+        removeMenuItem.title = "Remove"
+        removeMenuItem.backColor = "#ff0000"
+        
+        let doneMenuItem = DoneMenuItemViewModel(parentViewModel: self)
+        doneMenuItem.title = "Done"
+        doneMenuItem.backColor = "#008800"
+        
+        menuItems?.append(contentsOf: [removeMenuItem, doneMenuItem])
     }
     
 }
@@ -37,6 +54,14 @@ extension TodoItemViewModel: TodoItemViewDelegate {
     /// On Item Selected received in ViewModel on TableView didSelectRowAt
     func onItemSelected() {
         
+    }
+    
+    func onRemoveSelected() {
+        self.parent?.onDeleteTodoItem(id: self.id ?? "")
+    }
+    
+    func onDoneSelected() {
+        self.parent?.onDoneTodoItem(id: self.id ?? "")
     }
     
 }

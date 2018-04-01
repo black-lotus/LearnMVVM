@@ -18,6 +18,10 @@
 		F1619ABE2070BEF600952950 /* TodoItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619ABD2070BEF600952950 /* TodoItemViewModel.swift */; };
 		F1619AC12070C11100952950 /* TodoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619ABF2070C11100952950 /* TodoItemTableViewCell.swift */; };
 		F1619AC22070C11100952950 /* TodoItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1619AC02070C11100952950 /* TodoItemTableViewCell.xib */; };
+		F1619AC42070E8DA00952950 /* TodoMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */; };
+		F1619AC62070E96900952950 /* RemoveMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */; };
+		F1619AC82070E9B400952950 /* DoneMenuItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */; };
+		F1619ACA2070ED0C00952950 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619AC92070ED0C00952950 /* UIColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +59,10 @@
 		F1619ABD2070BEF600952950 /* TodoItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemViewModel.swift; sourceTree = "<group>"; };
 		F1619ABF2070C11100952950 /* TodoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemTableViewCell.swift; sourceTree = "<group>"; };
 		F1619AC02070C11100952950 /* TodoItemTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TodoItemTableViewCell.xib; sourceTree = "<group>"; };
+		F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoMenuItemViewModel.swift; sourceTree = "<group>"; };
+		F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveMenuItemViewModel.swift; sourceTree = "<group>"; };
+		F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneMenuItemViewModel.swift; sourceTree = "<group>"; };
+		F1619AC92070ED0C00952950 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,8 +121,12 @@
 				F1619A992070BC6400952950 /* Info.plist */,
 				F1619ABB2070BE1500952950 /* TodoViewModel.swift */,
 				F1619ABD2070BEF600952950 /* TodoItemViewModel.swift */,
+				F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */,
+				F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */,
+				F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */,
 				F1619ABF2070C11100952950 /* TodoItemTableViewCell.swift */,
 				F1619AC02070C11100952950 /* TodoItemTableViewCell.xib */,
+				F1619AC92070ED0C00952950 /* UIColorExtension.swift */,
 			);
 			path = TableMVVM;
 			sourceTree = "<group>";
@@ -272,8 +284,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1619AC62070E96900952950 /* RemoveMenuItemViewModel.swift in Sources */,
+				F1619AC42070E8DA00952950 /* TodoMenuItemViewModel.swift in Sources */,
 				F1619AC12070C11100952950 /* TodoItemTableViewCell.swift in Sources */,
 				F1619ABC2070BE1500952950 /* TodoViewModel.swift in Sources */,
+				F1619AC82070E9B400952950 /* DoneMenuItemViewModel.swift in Sources */,
+				F1619ACA2070ED0C00952950 /* UIColorExtension.swift in Sources */,
 				F1619A902070BC6400952950 /* ViewController.swift in Sources */,
 				F1619A8E2070BC6400952950 /* AppDelegate.swift in Sources */,
 				F1619ABE2070BEF600952950 /* TodoItemViewModel.swift in Sources */,

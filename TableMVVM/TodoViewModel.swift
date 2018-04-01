@@ -8,8 +8,10 @@
 
 import Foundation
 
-protocol TodoViewDelegate {
+protocol TodoViewDelegate: class {
     func onAddTodoItem()
+    func onDeleteTodoItem(id: String)
+    func onDoneTodoItem(id: String)
 }
 
 protocol TodoViewPresentable {
@@ -28,9 +30,9 @@ class TodoViewModel: TodoViewPresentable {
     init(view: TodoView?) {
         self.view = view
         
-        let item1 = TodoItemViewModel(id: "1", textValue: "aaa")
-        let item2 = TodoItemViewModel(id: "2", textValue: "bbb")
-        let item3 = TodoItemViewModel(id: "3", textValue: "ccc")
+        let item1 = TodoItemViewModel(id: "1", textValue: "aaa", parentViewModel: self)
+        let item2 = TodoItemViewModel(id: "2", textValue: "bbb", parentViewModel: self)
+        let item3 = TodoItemViewModel(id: "3", textValue: "ccc", parentViewModel: self)
         
         self.items.append(contentsOf: [item1, item2, item3])
     }
@@ -45,7 +47,7 @@ extension TodoViewModel: TodoViewDelegate {
         }
         
         let index = self.items.count + 1
-        let newItem = TodoItemViewModel(id: "\(index)", textValue: newValue)
+        let newItem = TodoItemViewModel(id: "\(index)", textValue: newValue, parentViewModel: self)
         self.items.append(newItem)
         
         // reset
@@ -53,6 +55,18 @@ extension TodoViewModel: TodoViewDelegate {
         
         // notify view item has been inserted
         self.view?.insertTodoItem()
+    }
+    
+    func onDeleteTodoItem(id: String) {
+        guard let index = self.items.index(where: { ($0.id ?? "") == id }) else { return }
+        self.items.remove(at: index)
+        
+        // notify view item has been delted
+        self.view?.removeTodoItem(at: index)
+    }
+    
+    func onDoneTodoItem(id: String) {
+        
     }
     
 }
