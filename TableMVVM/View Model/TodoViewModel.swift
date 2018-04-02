@@ -77,8 +77,16 @@ extension TodoViewModel: TodoViewDelegate {
             doneMenuItem.title = item.isDone! ? "Undone" : "Done"
         }
         
+        self.items.sort { (a, b) -> Bool in
+            if (a.isDone! && b.isDone!) || (!(a.isDone!) && !(b.isDone!)) {
+                return a.id! < b.id!
+            }
+            
+            return !(a.isDone!) && b.isDone!
+        }
+        
         // notify view item has been updated
-        self.view?.updateTodoItem(at: index)
+        self.view?.reloadTodoItems()
     }
     
 }

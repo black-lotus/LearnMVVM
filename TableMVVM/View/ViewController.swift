@@ -12,6 +12,7 @@ protocol TodoView: class {
     func insertTodoItem()
     func removeTodoItem(at index: Int)
     func updateTodoItem(at index: Int)
+    func reloadTodoItems()
 }
 
 class ViewController: UIViewController {
@@ -142,6 +143,12 @@ extension ViewController: TodoView {
     func updateTodoItem(at index: Int) {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
+        }
+    }
+    
+    func reloadTodoItems() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
