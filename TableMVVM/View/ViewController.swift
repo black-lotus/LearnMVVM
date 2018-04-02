@@ -7,13 +7,8 @@
 //
 
 import UIKit
-
-protocol TodoView: class {
-    func insertTodoItem()
-    func removeTodoItem(at index: Int)
-    func updateTodoItem(at index: Int)
-    func reloadTodoItems()
-}
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
 
@@ -22,17 +17,25 @@ class ViewController: UIViewController {
     
     var viewModel: TodoViewModel?
     
+    let disposeBag: DisposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         self.tableView.register(UINib(nibName: TodoItemTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: TodoItemTableViewCell.identifier)
-        self.tableView.dataSource = self
+
         self.tableView.delegate = self
         
         if self.viewModel == nil {
-            self.viewModel = TodoViewModel(view: self)
+            self.viewModel = TodoViewModel()
         }
+        
+        self.viewModel?.items
+            .asObservable()
+            .bind(to: self.tableView.rx.items(cellIdentifier: TodoItemTableViewCell.identifier, cellType: TodoItemTableViewCell.self)) { (index, item, cell) in
+                cell.configureCell(with: item)
+            }.disposed(by: disposeBag)
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,38 +55,11 @@ class ViewController: UIViewController {
     
 }
 
-
-extension ViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel?.items.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell: TodoItemTableViewCell = tableView.dequeueReusableCell(withIdentifier: TodoItemTableViewCell.identifier, for: indexPath) as? TodoItemTableViewCell else {
-            return UITableViewCell()
-        }
-        
-        let index: Int = indexPath.row
-        if let item = self.viewModel?.items[index] {
-            cell.configureCell(with: item)
-        }
-        
-        return cell
-    }
-    
-}
-
-
 extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index: Int = indexPath.row
-        if let item = self.viewModel?.items[index] {
+        if let item = self.viewModel?.items.value[index] {
             (item as? TodoItemViewDelegate)?.onItemSelected()
         }
     }
@@ -92,7 +68,7 @@ extension ViewController: UITableViewDelegate {
         var actions: [UIContextualAction] = [UIContextualAction]()
         
         let index: Int = indexPath.row
-        if let itemViewModel = self.viewModel?.items[index] {
+        if let itemViewModel = self.viewModel?.items.value[index] {
             itemViewModel.menuItems?.forEach({ (item) in
                 let menuAction = UIContextualAction(style: .normal, title: item.title) { (action, sourceView, success: (Bool) -> (Void)) in
                     if let delegate = item as? TodoMenuItemViewDelegate {
@@ -111,45 +87,6 @@ extension ViewController: UITableViewDelegate {
         }
         
         return UISwipeActionsConfiguration(actions: actions)
-    }
-    
-}
-
-
-extension ViewController: TodoView {
-    
-    func insertTodoItem() {
-        guard let items = self.viewModel?.items else {
-            return
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.itemTextField.text = self?.viewModel?.newTodoItem
-            
-            self?.tableView.beginUpdates()
-            self?.tableView.insertRows(at: [IndexPath(row: items.count - 1, section: 0)], with: UITableViewRowAnimation.automatic)
-            self?.tableView.endUpdates()
-        }
-    }
-    
-    func removeTodoItem(at index: Int) {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.beginUpdates()
-            self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
-            self?.tableView.endUpdates()
-        }
-    }
-    
-    func updateTodoItem(at index: Int) {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: UITableViewRowAnimation.automatic)
-        }
-    }
-    
-    func reloadTodoItems() {
-        DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
-        }
     }
     
 }

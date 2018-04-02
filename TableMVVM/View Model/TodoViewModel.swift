@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol TodoViewDelegate: class {
     func onAddTodoItem()
@@ -23,18 +24,14 @@ protocol TodoViewPresentable {
 class TodoViewModel: TodoViewPresentable {
     
     var newTodoItem: String?
-    var items: [TodoItemPresentable] = []
+    var items: Variable<[TodoItemPresentable]> = Variable([])
     
-    weak var view: TodoView?
-    
-    init(view: TodoView?) {
-        self.view = view
-        
+    init() {
         let item1 = TodoItemViewModel(id: "1", textValue: "aaa", parentViewModel: self)
         let item2 = TodoItemViewModel(id: "2", textValue: "bbb", parentViewModel: self)
         let item3 = TodoItemViewModel(id: "3", textValue: "ccc", parentViewModel: self)
         
-        self.items.append(contentsOf: [item1, item2, item3])
+        self.items.value.append(contentsOf: [item1, item2, item3])
     }
     
 }
@@ -46,29 +43,23 @@ extension TodoViewModel: TodoViewDelegate {
             return
         }
         
-        let index = self.items.count + 1
+        let index = self.items.value.count + 1
         let newItem = TodoItemViewModel(id: "\(index)", textValue: newValue, parentViewModel: self)
-        self.items.append(newItem)
+        self.items.value.append(newItem)
         
         // reset
         self.newTodoItem = nil
-        
-        // notify view item has been inserted
-        self.view?.insertTodoItem()
     }
     
     func onDeleteTodoItem(id: String) {
-        guard let index = self.items.index(where: { ($0.id ?? "") == id }) else { return }
-        self.items.remove(at: index)
-        
-        // notify view item has been deleted
-        self.view?.removeTodoItem(at: index)
+        guard let index = self.items.value.index(where: { ($0.id ?? "") == id }) else { return }
+        self.items.value.remove(at: index)
     }
     
     func onDoneTodoItem(id: String) {
-        guard let index = self.items.index(where: { ($0.id ?? "") == id }) else { return }
+        guard let index = self.items.value.index(where: { ($0.id ?? "") == id }) else { return }
         
-        var item = self.items[index]
+        var item = self.items.value[index]
         item.isDone = !(item.isDone!)
         
         if var doneMenuItem = item.menuItems?.filter({ (menuItem) -> Bool in
@@ -77,16 +68,13 @@ extension TodoViewModel: TodoViewDelegate {
             doneMenuItem.title = item.isDone! ? "Undone" : "Done"
         }
         
-        self.items.sort { (a, b) -> Bool in
+        self.items.value.sort { (a, b) -> Bool in
             if (a.isDone! && b.isDone!) || (!(a.isDone!) && !(b.isDone!)) {
                 return a.id! < b.id!
             }
             
             return !(a.isDone!) && b.isDone!
         }
-        
-        // notify view item has been updated
-        self.view?.reloadTodoItems()
     }
     
 }
