@@ -11,7 +11,7 @@ import Foundation
 protocol TodoItemPresentable {
     
     var id: String? { get }
-    var textValue: String? { get }
+    var textValue: String? { get set }
     var isDone: Bool? { get set }
     var menuItems: [TodoMenuItemViewPresentable]? { get }
     
