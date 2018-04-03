@@ -15,6 +15,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var itemTextField: UITextField!
     
+    fileprivate lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.dimsBackgroundDuringPresentation = false
+        controller.searchBar.sizeToFit()
+        controller.searchBar.barStyle = UIBarStyle.black
+        controller.searchBar.barTintColor = UIColor.black
+        controller.searchBar.backgroundColor = UIColor.clear
+        controller.searchBar.placeholder = "Search todos..."
+        
+        return controller
+    }()
+    
     var viewModel: TodoViewModel?
     
     let disposeBag: DisposeBag = DisposeBag()
@@ -31,11 +43,24 @@ class ViewController: UIViewController {
             self.viewModel = TodoViewModel()
         }
         
-        self.viewModel?.items
+        self.viewModel?.filteredItems
             .asObservable()
             .bind(to: self.tableView.rx.items(cellIdentifier: TodoItemTableViewCell.identifier, cellType: TodoItemTableViewCell.self)) { (index, item, cell) in
                 cell.configureCell(with: item)
             }.disposed(by: disposeBag)
+        
+        let searchBar = self.searchController.searchBar
+        
+        self.tableView.tableHeaderView = searchBar
+        self.tableView.contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
+        
+        searchBar.rx
+            .text
+            .orEmpty
+            .distinctUntilChanged()
+            .debug()
+            .bind(to: (self.viewModel?.searchValue)!)
+            .disposed(by: self.disposeBag)
     }
 
     override func didReceiveMemoryWarning() {

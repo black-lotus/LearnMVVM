@@ -20,19 +20,53 @@ protocol TodoViewDelegate: class {
 protocol TodoViewPresentable {
     
     var newTodoItem: String? { get }
+    var searchValue: Variable<String> { get }
     
 }
 
 class TodoViewModel: TodoViewPresentable {
     
     var newTodoItem: String?
+    var searchValue: Variable<String> = Variable("")
+    
     var items: Variable<[TodoItemPresentable]> = Variable([])
+    var filteredItems: Variable<[TodoItemPresentable]> = Variable([])
     var database: Database?
     var notificationToken: NotificationToken? = nil
+    
+    lazy var searchValueObservable: Observable<String> = self.searchValue.asObservable()
+    lazy var itemsObservable: Observable<[TodoItemPresentable]> = self.items.asObservable()
+    
+    let disposeBag = DisposeBag()
     
     init() {
         database = Database.shared
         
+        fetchTodos()
+        handleRealmNotifications()
+        
+        self.searchValueObservable.subscribe(onNext: { (value) in
+            print("Search received => \(value)")
+            
+            self.itemsObservable.map({
+                $0.filter({ (todoItem) -> Bool in
+                    if value.isEmpty {
+                        return true
+                    }
+                    
+                    return (todoItem.textValue?.lowercased().contains(value.lowercased()))!
+                })
+            })
+            .bind(to: self.filteredItems)
+            .disposed(by: self.disposeBag)
+        }).disposed(by: self.disposeBag)
+    }
+    
+    deinit {
+        notificationToken = nil
+    }
+    
+    func fetchTodos() {
         APIService.shared.fetchAllTodos { [weak self] (data) -> (Void) in
             let jsonData = JSON(data)
             if let todos = jsonData["todos"].array {
@@ -43,8 +77,9 @@ class TodoViewModel: TodoViewPresentable {
                 })
             }
         }
-        
-        
+    }
+    
+    func handleRealmNotifications() {
         let itemResults = database?.fetch()
         notificationToken = itemResults?.observe({ [weak self] (changes: RealmCollectionChange) in
             switch changes {
@@ -60,7 +95,7 @@ class TodoViewModel: TodoViewPresentable {
             case .update(_, let deletions, let insertions, let modifications):
                 insertions.forEach({ (index) in
                     let item = itemResults![index]
-                
+                    
                     // transform entity into view model
                     let newItem = TodoItemViewModel(id: "\(item.todoId)", textValue: item.todoValue, parentViewModel: self)
                     
@@ -103,12 +138,8 @@ class TodoViewModel: TodoViewPresentable {
                 return !(a.isDone!) && b.isDone!
             }
         })
-
     }
     
-    deinit {
-        notificationToken = nil
-    }
 }
 
 extension TodoViewModel: TodoViewDelegate {
