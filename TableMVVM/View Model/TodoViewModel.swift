@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RealmSwift
+import SwiftyJSON
 
 protocol TodoViewDelegate: class {
     func onAddTodoItem()
@@ -31,6 +32,18 @@ class TodoViewModel: TodoViewPresentable {
     
     init() {
         database = Database.shared
+        
+        APIService.shared.fetchAllTodos { [weak self] (data) -> (Void) in
+            let jsonData = JSON(data)
+            if let todos = jsonData["todos"].array {
+                todos.forEach({ (itemDict) in
+                    if let id = itemDict["id"].int, let value = itemDict["value"].string {
+                        self?.database?.createOrUpdate(todoItem: value)
+                    }
+                })
+            }
+        }
+        
         
         let itemResults = database?.fetch()
         notificationToken = itemResults?.observe({ [weak self] (changes: RealmCollectionChange) in

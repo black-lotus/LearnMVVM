@@ -21,6 +21,12 @@ class Database {
         let realm = try! Realm()
         
         var id: Int = 1
+        
+        let isEmpty = realm.objects(TodoItem.self).filter({ $0.todoValue.lowercased() == value.lowercased() }).isEmpty
+        if !isEmpty {
+            return
+        }
+        
         if let lastEntity = realm.objects(TodoItem.self).last {
             id = lastEntity.todoId + 1
         }
