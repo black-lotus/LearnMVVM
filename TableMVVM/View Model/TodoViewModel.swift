@@ -67,16 +67,27 @@ class TodoViewModel: TodoViewPresentable {
     }
     
     func fetchTodos() {
-        APIService.shared.fetchAllTodos { [weak self] (data) -> (Void) in
-            let jsonData = JSON(data)
-            if let todos = jsonData["todos"].array {
-                todos.forEach({ (itemDict) in
-                    if let id = itemDict["id"].int, let value = itemDict["value"].string {
-                        self?.database?.createOrUpdate(todoItem: value)
-                    }
-                })
-            }
-        }
+        let todosOberservable = APIService.shared.fetchAllTodos()
+        
+        todosOberservable.subscribe(
+            onNext: { [weak self] (response) in
+                if let todos = response["todos"].array {
+                    todos.forEach({ (itemDict) in
+                        if let id = itemDict["id"].int, let value = itemDict["value"].string {
+                            self?.database?.createOrUpdate(todoItem: value)
+                        }
+                    })
+                }
+            },
+            onError: { (error) in
+                print("observable error")
+            },
+            onCompleted: {
+                print("observable completed")
+            },
+            onDisposed: {
+                print("observable disposed")
+            }).disposed(by: self.disposeBag)
     }
     
     func handleRealmNotifications() {
