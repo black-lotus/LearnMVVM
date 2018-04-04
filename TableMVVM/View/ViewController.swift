@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class ViewController: UIViewController {
 
@@ -43,11 +44,24 @@ class ViewController: UIViewController {
             self.viewModel = TodoViewModel()
         }
         
-        self.viewModel?.filteredItems
-            .asObservable()
-            .bind(to: self.tableView.rx.items(cellIdentifier: TodoItemTableViewCell.identifier, cellType: TodoItemTableViewCell.self)) { (index, item, cell) in
-                cell.configureCell(with: item)
-            }.disposed(by: disposeBag)
+        self.viewModel?.dataSource.configureCell = { (dataSource, tableView, indexPath, item) in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoItemTableViewCell.identifier, for: indexPath) as? TodoItemTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.configureCell(with: item)
+            
+            return cell
+        }
+        
+        if let dataSource = self.viewModel?.dataSource {
+            self.viewModel?.filteredItems.asObservable()
+                .map({ (items) -> SectionViewModel in
+                    return SectionViewModel(header: "Personal", items: items)
+                })
+                .bind(to: self.tableView.rx.items(dataSource: dataSource))
+                .disposed(by: disposeBag)
+        }
         
         let searchBar = self.searchController.searchBar
         

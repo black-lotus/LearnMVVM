@@ -10,6 +10,22 @@ import Foundation
 import RxSwift
 import RealmSwift
 import SwiftyJSON
+import RxDataSources
+
+
+struct SectionViewModel {
+    var header: String
+    var items: [Item]
+}
+
+extension SectionViewModel: SectionModelType {
+    typealias Item = TodoItemPresentable
+    
+    init(original: SectionViewModel, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
 
 protocol TodoViewDelegate: class {
     func onAddTodoItem()
@@ -36,6 +52,10 @@ class TodoViewModel: TodoViewPresentable {
     
     lazy var searchValueObservable: Observable<String> = self.searchValue.asObservable()
     lazy var itemsObservable: Observable<[TodoItemPresentable]> = self.items.asObservable()
+    
+    var dataSource = RxTableViewSectionedReloadDataSource<SectionViewModel>(configureCell: {(_, _, _, _) in
+        fatalError()
+    })
     
     let disposeBag = DisposeBag()
     
