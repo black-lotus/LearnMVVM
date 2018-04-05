@@ -66,7 +66,10 @@ class ViewController: UIViewController {
             
             let observable = self.viewModel?.filteredItems.asObservable()
                 .map({ (items) -> [SectionViewModel] in
-                    return [ SectionViewModel(header: "Personal", items: items) ]
+                    return [
+                        SectionViewModel(header: "Personal", items: items.filter({ $0.type! == "personal" })),
+                        SectionViewModel(header: "Work", items: items.filter({ $0.type! == "work" }))
+                    ]
                 })
             
             observable?.bind(to: self.tableView.rx.items(dataSource: dataSource)).disposed(by: self.disposeBag)
