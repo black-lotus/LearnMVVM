@@ -10,11 +10,15 @@
 		0DA1DAE1F2CE351A3B2C3FA3 /* Pods_TableMVVMUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 269C990169EC9B276FA4777C /* Pods_TableMVVMUITests.framework */; };
 		434B094B411A1EE7B7C363F7 /* Pods_TableMVVMTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE3E28AF88996DE1B1BDF79E /* Pods_TableMVVMTests.framework */; };
 		8D3273ED20734FDC00315EE1 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3273EC20734FDC00315EE1 /* APIService.swift */; };
+		8D98891320761D3800D878B9 /* SectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D98891220761D3800D878B9 /* SectionViewModel.swift */; };
+		8D9889162076271000D878B9 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9889152076271000D878B9 /* AppCoordinator.swift */; };
+		8D9E601720764DF400D707D8 /* CreateTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9E601620764DF400D707D8 /* CreateTodoViewController.swift */; };
+		8D9E6019207652C000D707D8 /* CreateTodoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9E6018207652C000D707D8 /* CreateTodoViewModel.swift */; };
 		8DC39C9D207250A900DFE12D /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC39C9C207250A900DFE12D /* Database.swift */; };
 		8DC39C9F2072522000DFE12D /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC39C9E2072522000DFE12D /* TodoItem.swift */; };
 		CF91889E60F4252B1A6F9EE7 /* Pods_TableMVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3D6C92515935523D344B27E /* Pods_TableMVVM.framework */; };
 		F1619A8E2070BC6400952950 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619A8D2070BC6400952950 /* AppDelegate.swift */; };
-		F1619A902070BC6400952950 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619A8F2070BC6400952950 /* ViewController.swift */; };
+		F1619A902070BC6400952950 /* TodosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1619A8F2070BC6400952950 /* TodosViewController.swift */; };
 		F1619A932070BC6400952950 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1619A912070BC6400952950 /* Main.storyboard */; };
 		F1619A952070BC6400952950 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1619A942070BC6400952950 /* Assets.xcassets */; };
 		F1619A982070BC6400952950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1619A962070BC6400952950 /* LaunchScreen.storyboard */; };
@@ -54,6 +58,10 @@
 		584FC162CD3DE638834CA7B9 /* Pods-TableMVVMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableMVVMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TableMVVMUITests/Pods-TableMVVMUITests.release.xcconfig"; sourceTree = "<group>"; };
 		79E54955EC3BDB1702FC0AF4 /* Pods-TableMVVMUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableMVVMUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TableMVVMUITests/Pods-TableMVVMUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8D3273EC20734FDC00315EE1 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		8D98891220761D3800D878B9 /* SectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionViewModel.swift; sourceTree = "<group>"; };
+		8D9889152076271000D878B9 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		8D9E601620764DF400D707D8 /* CreateTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTodoViewController.swift; sourceTree = "<group>"; };
+		8D9E6018207652C000D707D8 /* CreateTodoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTodoViewModel.swift; sourceTree = "<group>"; };
 		8DC39C9C207250A900DFE12D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8DC39C9E2072522000DFE12D /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		AE3E28AF88996DE1B1BDF79E /* Pods_TableMVVMTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TableMVVMTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +70,7 @@
 		E57C231CB565FB27058FEBA5 /* Pods-TableMVVM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableMVVM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TableMVVM/Pods-TableMVVM.debug.xcconfig"; sourceTree = "<group>"; };
 		F1619A8A2070BC6400952950 /* TableMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1619A8D2070BC6400952950 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F1619A8F2070BC6400952950 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F1619A8F2070BC6400952950 /* TodosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosViewController.swift; sourceTree = "<group>"; };
 		F1619A922070BC6400952950 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F1619A942070BC6400952950 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F1619A972070BC6400952950 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -124,6 +132,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8D9889142076270200D878B9 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				8D9889152076271000D878B9 /* AppCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		8DC39CA0207254C500DFE12D /* Entity */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +183,7 @@
 		F1619A8C2070BC6400952950 /* TableMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				8D9889142076270200D878B9 /* Coordinator */,
 				8DC39CA0207254C500DFE12D /* Entity */,
 				F1619ACC20712CD000952950 /* View Model */,
 				F1619ACB20712CC100952950 /* View */,
@@ -204,7 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				F1619ACE20712CFF00952950 /* cells */,
-				F1619A8F2070BC6400952950 /* ViewController.swift */,
+				F1619A8F2070BC6400952950 /* TodosViewController.swift */,
+				8D9E601620764DF400D707D8 /* CreateTodoViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,6 +235,8 @@
 				F1619AC32070E8DA00952950 /* TodoMenuItemViewModel.swift */,
 				F1619AC52070E96900952950 /* RemoveMenuItemViewModel.swift */,
 				F1619AC72070E9B400952950 /* DoneMenuItemViewModel.swift */,
+				8D98891220761D3800D878B9 /* SectionViewModel.swift */,
+				8D9E6018207652C000D707D8 /* CreateTodoViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -548,12 +568,16 @@
 			files = (
 				F1619AC62070E96900952950 /* RemoveMenuItemViewModel.swift in Sources */,
 				F1619AC42070E8DA00952950 /* TodoMenuItemViewModel.swift in Sources */,
+				8D98891320761D3800D878B9 /* SectionViewModel.swift in Sources */,
+				8D9E601720764DF400D707D8 /* CreateTodoViewController.swift in Sources */,
 				F1619AC12070C11100952950 /* TodoItemTableViewCell.swift in Sources */,
 				F1619ABC2070BE1500952950 /* TodoViewModel.swift in Sources */,
 				F1619AC82070E9B400952950 /* DoneMenuItemViewModel.swift in Sources */,
+				8D9889162076271000D878B9 /* AppCoordinator.swift in Sources */,
 				8DC39C9F2072522000DFE12D /* TodoItem.swift in Sources */,
 				F1619ACA2070ED0C00952950 /* UIColorExtension.swift in Sources */,
-				F1619A902070BC6400952950 /* ViewController.swift in Sources */,
+				8D9E6019207652C000D707D8 /* CreateTodoViewModel.swift in Sources */,
+				F1619A902070BC6400952950 /* TodosViewController.swift in Sources */,
 				F1619A8E2070BC6400952950 /* AppDelegate.swift in Sources */,
 				8DC39C9D207250A900DFE12D /* Database.swift in Sources */,
 				8D3273ED20734FDC00315EE1 /* APIService.swift in Sources */,

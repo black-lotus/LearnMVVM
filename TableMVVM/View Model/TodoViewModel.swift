@@ -12,26 +12,6 @@ import RealmSwift
 import SwiftyJSON
 import RxDataSources
 
-
-struct SectionViewModel {
-    var header: String
-    var items: [Item]
-}
-
-extension SectionViewModel: AnimatableSectionModelType {
-    typealias Identity = String
-    typealias Item = TodoItemViewModel
-    
-    var identity: String {
-        return header
-    }
-    
-    init(original: SectionViewModel, items: [Item]) {
-        self = original
-        self.items = items
-    }
-}
-
 protocol TodoViewDelegate: class {
     func onAddTodoItem()
     func onDeleteTodoItem(id: String)

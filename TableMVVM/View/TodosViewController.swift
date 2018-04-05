@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TodosViewController.swift
 //  TableMVVM
 //
 //  Created by romdoni agung purbayanto on 01/04/18.
@@ -11,10 +11,9 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class ViewController: UIViewController {
+class TodosViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var itemTextField: UITextField!
     
     fileprivate lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -93,20 +92,10 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    @IBAction func onAddItem(_ sender: UIButton) {
-        guard let text: String = self.itemTextField.text, !text.isEmpty else { return }
-        
-        self.viewModel?.newTodoItem = text
-        
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.viewModel?.onAddTodoItem()
-        }
-    }
     
 }
 
-extension ViewController: UITableViewDelegate {
+extension TodosViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index: Int = indexPath.row
