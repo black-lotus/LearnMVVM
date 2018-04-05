@@ -18,8 +18,13 @@ struct SectionViewModel {
     var items: [Item]
 }
 
-extension SectionViewModel: SectionModelType {
-    typealias Item = TodoItemPresentable
+extension SectionViewModel: AnimatableSectionModelType {
+    typealias Identity = String
+    typealias Item = TodoItemViewModel
+    
+    var identity: String {
+        return header
+    }
     
     init(original: SectionViewModel, items: [Item]) {
         self = original
@@ -45,15 +50,15 @@ class TodoViewModel: TodoViewPresentable {
     var newTodoItem: String?
     var searchValue: Variable<String> = Variable("")
     
-    var items: Variable<[TodoItemPresentable]> = Variable([])
-    var filteredItems: Variable<[TodoItemPresentable]> = Variable([])
+    var items: Variable<[TodoItemViewModel]> = Variable([])
+    var filteredItems: Variable<[TodoItemViewModel]> = Variable([])
     var database: Database?
     var notificationToken: NotificationToken? = nil
     
     lazy var searchValueObservable: Observable<String> = self.searchValue.asObservable()
-    lazy var itemsObservable: Observable<[TodoItemPresentable]> = self.items.asObservable()
+    lazy var itemsObservable: Observable<[TodoItemViewModel]> = self.items.asObservable()
     
-    var dataSource = RxTableViewSectionedReloadDataSource<SectionViewModel>(configureCell: {(_, _, _, _) in
+    var dataSource = RxTableViewSectionedAnimatedDataSource<SectionViewModel>(configureCell: {(_, _, _, _) in
         fatalError()
     })
     
@@ -93,8 +98,8 @@ class TodoViewModel: TodoViewPresentable {
             onNext: { [weak self] (response) in
                 if let todos = response["todos"].array {
                     todos.forEach({ (itemDict) in
-                        if let id = itemDict["id"].int, let value = itemDict["value"].string {
-                            self?.database?.createOrUpdate(todoItem: value)
+                        if let id = itemDict["id"].int, let value = itemDict["value"].string, let type = itemDict["type"].string {
+                            self?.database?.createOrUpdate(todoItem: value, todoType: type)
                         }
                     })
                 }
@@ -117,7 +122,7 @@ class TodoViewModel: TodoViewPresentable {
             case .initial(_):
                 itemResults?.forEach({ (item) in
                     // transform entity into view model
-                    let newItem = TodoItemViewModel(id: "\(item.todoId)", textValue: item.todoValue, parentViewModel: self)
+                    let newItem = TodoItemViewModel(id: "\(item.todoId)", textValue: item.todoValue ?? "", type: item.todoType ?? "", parentViewModel: self)
                     
                     self?.items.value.append(newItem)
                 })
@@ -128,7 +133,7 @@ class TodoViewModel: TodoViewPresentable {
                     let item = itemResults![index]
                     
                     // transform entity into view model
-                    let newItem = TodoItemViewModel(id: "\(item.todoId)", textValue: item.todoValue, parentViewModel: self)
+                    let newItem = TodoItemViewModel(id: "\(item.todoId)", textValue: item.todoValue ?? "", type: item.todoType ?? "", parentViewModel: self)
                     
                     self?.items.value.append(newItem)
                 })
@@ -180,7 +185,7 @@ extension TodoViewModel: TodoViewDelegate {
             return
         }
         
-        database?.createOrUpdate(todoItem: newValue)
+        database?.createOrUpdate(todoItem: newValue, todoType: "personal")
         
         // reset
         self.newTodoItem = nil

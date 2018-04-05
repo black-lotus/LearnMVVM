@@ -55,12 +55,21 @@ class ViewController: UIViewController {
         }
         
         if let dataSource = self.viewModel?.dataSource {
-            self.viewModel?.filteredItems.asObservable()
-                .map({ (items) -> SectionViewModel in
-                    return SectionViewModel(header: "Personal", items: items)
+            dataSource.titleForHeaderInSection = { (dataSource, index) in
+                let section = dataSource[index]
+                return section.header
+            }
+            
+            dataSource.canEditRowAtIndexPath = { (dataSource, indexPath) in
+                return true
+            }
+            
+            let observable = self.viewModel?.filteredItems.asObservable()
+                .map({ (items) -> [SectionViewModel] in
+                    return [ SectionViewModel(header: "Personal", items: items) ]
                 })
-                .bind(to: self.tableView.rx.items(dataSource: dataSource))
-                .disposed(by: disposeBag)
+            
+            observable?.bind(to: self.tableView.rx.items(dataSource: dataSource)).disposed(by: self.disposeBag)
         }
         
         let searchBar = self.searchController.searchBar

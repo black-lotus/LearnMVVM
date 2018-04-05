@@ -7,12 +7,14 @@
 //
 
 import Foundation
+import RxDataSources
 
 protocol TodoItemPresentable {
     
     var id: String? { get }
     var textValue: String? { get set }
     var isDone: Bool? { get set }
+    var type: String? { get }
     var menuItems: [TodoMenuItemViewPresentable]? { get }
     
 }
@@ -28,13 +30,15 @@ class TodoItemViewModel: TodoItemPresentable {
     var id: String? = "0"
     var textValue: String?
     var isDone: Bool? = false
+    var type: String?
     var menuItems: [TodoMenuItemViewPresentable]? = [TodoMenuItemViewPresentable]()
     
     weak var parent: TodoViewDelegate?
     
-    init(id: String?, textValue: String?, parentViewModel: TodoViewDelegate?) {
+    init(id: String, textValue: String, type: String, parentViewModel: TodoViewDelegate?) {
         self.id = id
         self.textValue = textValue
+        self.type = type
         self.parent = parentViewModel
         
         let removeMenuItem = RemoveMenuItemViewModel(parentViewModel: self)
@@ -64,6 +68,21 @@ extension TodoItemViewModel: TodoItemViewDelegate {
     
     func onDoneSelected() {
         self.parent?.onDoneTodoItem(id: self.id ?? "")
+    }
+    
+}
+
+
+extension TodoItemViewModel: IdentifiableType, Equatable {
+
+    typealias Identity = String
+    
+    var identity: String {
+        return id ?? ""
+    }
+    
+    static func ==(lhs: TodoItemViewModel, rhs: TodoItemViewModel) -> Bool {
+        return lhs.id! == rhs.id!
     }
     
 }

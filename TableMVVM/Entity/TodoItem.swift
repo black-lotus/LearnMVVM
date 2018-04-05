@@ -13,6 +13,7 @@ class TodoItem: Object {
     
     @objc dynamic var todoId: Int = 0
     @objc dynamic var todoValue: String = ""
+    @objc dynamic var todoType: String = ""
     @objc dynamic var isDone: Bool = false
     @objc dynamic var createdAt: Date? = Date()
     @objc dynamic var updatedAt: Date?
